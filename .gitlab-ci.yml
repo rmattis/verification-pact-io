@@ -1,4 +1,4 @@
-image: maven:latest
+image: maven:3.9.5
 
 stages:
   - build
