@@ -26,7 +26,7 @@ public class DecodingTestHelper {
      * @param transformFunction A transform function where you get the jsonNode of the whole file and return just the node that should be decoded.
      * @param valueType         The type of class you want to decode the jsonNode to.
      */
-    public <T> List<DynamicTest> testDecodingForFileDirectories(
+    public static <T> List<DynamicTest> testDecodingForFileDirectories(
             List<String> fileDirectories,
             Function<JsonNode, Optional<JsonNode>> transformFunction,
             Class<T> valueType
@@ -36,7 +36,7 @@ public class DecodingTestHelper {
 
         // Create a list with all .json files from all the provided directories
         List<File> testFiles = fileDirectories.stream().flatMap(fileName -> {
-            File directory = new File(getClass().getClassLoader().getResource(fileName).getFile());
+            File directory = new File(DecodingTestHelper.class.getClassLoader().getResource(fileName).getFile());
             return Arrays.stream(Objects.requireNonNull(directory.listFiles()));
         }).filter(file -> file.getName().endsWith(".json")).toList();
 

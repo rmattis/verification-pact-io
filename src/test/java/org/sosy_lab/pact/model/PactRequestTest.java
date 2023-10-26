@@ -12,12 +12,11 @@ public class PactRequestTest {
 
     @TestFactory
     public List<DynamicTest> makeSureAllPactV4TestcaseRequestsCanBeDecoded() {
-        var helper = new DecodingTestHelper();
         var responseDirectory = "pact-v4-specification-testcases/request";
         var testDirectories = Stream.of("body", "headers", "method", "path", "query")
                 .map(directory -> responseDirectory + "/" + directory).toList();
 
-        return helper.testDecodingForFileDirectories(
+        return DecodingTestHelper.testDecodingForFileDirectories(
                 testDirectories,
                 jsonNode -> Optional.of(jsonNode.required("expected")),
                 PactRequest.class
