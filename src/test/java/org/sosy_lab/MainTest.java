@@ -19,7 +19,7 @@ public class MainTest {
 
     private static final List<String> possibleCommands = List.of("-h", "--help", "--version",
             "printMatchingRules --help", "printMatchingRules -h",
-            "printMatchingRules --version", "printMatchingRules test", "printMatchingRules test.json");
+            "printMatchingRules --version", "printMatchingRules test.json");
 
     @BeforeEach
     public void beforeEach() {

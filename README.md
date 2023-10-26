@@ -14,3 +14,9 @@ To compile the projects use ```mvn compile```
 ### Tests
 
 To run the tests use ``mvn test``
+
+## Run CLI
+
+### Maven
+To run the CLI directly in Maven, run the following commands (easiest to use during development):
+```mvn -Dexec.args="printMatchingRules test.json"```

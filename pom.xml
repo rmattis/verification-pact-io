@@ -19,6 +19,7 @@
         <maven-compiler-plugin.version>3.6.1</maven-compiler-plugin.version>
         <properties-maven-plugin.version>1.1.0</properties-maven-plugin.version>
         <picocli.version>4.7.0</picocli.version>
+        <jackson.version>2.14.2</jackson.version>
         <junit.version>5.9.1</junit.version>
         <assertj.version>3.23.1</assertj.version>
         <!-- 3.0.0 M5+ is required for running native tests -->
@@ -27,17 +28,23 @@
     </properties>
 
     <dependencies>
+        <!-- cli library -->
         <dependency>
             <groupId>info.picocli</groupId>
             <artifactId>picocli</artifactId>
             <version>${picocli.version}</version>
         </dependency>
 
-        <!-- just an example dependency -->
+        <!-- library for parsing json -->
         <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.11.0</version>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jdk8</artifactId>
+            <version>${jackson.version}</version>
         </dependency>
 
         <!-- test dependencies -->
@@ -97,6 +104,8 @@
                     <compilerArgs>
                         <arg>-Aproject=${project.groupId}/${project.artifactId}</arg>
                     </compilerArgs>
+                    <source>21</source>
+                    <target>21</target>
                 </configuration>
             </plugin>
             <plugin>
