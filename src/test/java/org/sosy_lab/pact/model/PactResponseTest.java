@@ -6,13 +6,14 @@ import org.sosy_lab.util.DecodingTestHelper;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public class PactResponseTest {
 
     @TestFactory
     public List<DynamicTest> makeSureAllPactV4TestcaseResponsesCanBeDecoded() {
         var responseDirectory = "pact-v4-specification-testcases/response";
-        var testDirectories = List.of("body", "headers", "status").stream().map(directory -> responseDirectory + "/" + directory).toList();
+        var testDirectories = Stream.of("body", "headers", "status").map(directory -> responseDirectory + "/" + directory).toList();
 
         return DecodingTestHelper.testDecodingForFileDirectories(
                 testDirectories,
