@@ -2,8 +2,10 @@
   "match": true,
   "comment": "top level array matches",
   "expected": {
-    "headers": {"Content-Type": "application/json"},
-    "body" : {
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
       "contentType": "application/json",
       "encoded": false,
       "content": [
@@ -21,7 +23,7 @@
         }
       ]
     },
-    "matchingRules" : {
+    "matchingRules": {
       "body": {
         "$[0].id": {
           "matchers": [
@@ -87,7 +89,9 @@
     }
   },
   "actual": {
-    "headers": {"Content-Type": "application/json"},
+    "headers": {
+      "Content-Type": "application/json"
+    },
     "body": {
       "contentType": "application/json",
       "encoded": false,

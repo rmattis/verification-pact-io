@@ -2,7 +2,9 @@
   "match": false,
   "comment": "Properties match but unexpected element received",
   "expected": {
-    "headers": {"Content-Type": "application/json"},
+    "headers": {
+      "Content-Type": "application/json"
+    },
     "body": {
       "contentType": "application/json",
       "encoded": false,
@@ -14,7 +16,9 @@
     }
   },
   "actual": {
-    "headers": {"Content-Type": "application/json"},
+    "headers": {
+      "Content-Type": "application/json"
+    },
     "body": {
       "contentType": "application/json",
       "encoded": false,

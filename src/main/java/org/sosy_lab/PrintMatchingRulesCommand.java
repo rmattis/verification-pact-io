@@ -3,17 +3,16 @@ package org.sosy_lab;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import org.sosy_lab.pact.model.PactMatchingRule;
-import org.sosy_lab.pact.model.PactSpecification;
-import org.sosy_lab.pact.model.matching.rule.PactMatchingRules;
-import org.sosy_lab.pact.parser.PactFileParser;
-import picocli.CommandLine;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.Callable;
+import org.sosy_lab.pact.model.PactMatchingRule;
+import org.sosy_lab.pact.model.PactSpecification;
+import org.sosy_lab.pact.model.matching.rule.PactMatchingRules;
+import org.sosy_lab.pact.parser.PactFileParser;
+import picocli.CommandLine;
 
 /**
  * ** printMatchingRules Command **
@@ -27,11 +26,10 @@ import java.util.concurrent.Callable;
 @CommandLine.Command(name = "printMatchingRules", mixinStandardHelpOptions = true)
 public class PrintMatchingRulesCommand implements Callable<Integer> {
 
-    @CommandLine.Parameters(index = "0", description = "The pact file to read")
-    private String pactFile;
-
     private final ObjectMapper objectMapper;
     private final PactFileParser pactFileParser;
+    @CommandLine.Parameters(index = "0", description = "The pact file to read")
+    private String pactFile;
 
     public PrintMatchingRulesCommand() {
         pactFileParser = new PactFileParser();

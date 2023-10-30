@@ -1,7 +1,7 @@
 {
   "match": true,
   "comment": "Headers match",
-  "expected" : {
+  "expected": {
     "method": "POST",
     "path": "/path",
     "query": {},

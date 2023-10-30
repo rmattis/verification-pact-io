@@ -3,12 +3,12 @@
   "comment": "XML array with type matcher mismatch",
   "expected": {
     "headers": {},
-    "body" : {
+    "body": {
       "contentType": "application/xml",
       "encoded": false,
       "content": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><people><person>Fred</person></people>"
     },
-    "matchingRules" : {
+    "matchingRules": {
       "body": {
         "$.people": {
           "matchers": [

@@ -1,11 +1,13 @@
 {
   "match": false,
   "comment": "Unexpected favourite colour with null value",
-  "expected" : {
+  "expected": {
     "method": "POST",
     "path": "/",
     "query": {},
-    "headers": {"Content-Type": "application/json"},
+    "headers": {
+      "Content-Type": "application/json"
+    },
     "body": {
       "contentType": "application/json",
       "encoded": false,
@@ -23,7 +25,9 @@
     "method": "POST",
     "path": "/",
     "query": {},
-    "headers": {"Content-Type": "application/json"},
+    "headers": {
+      "Content-Type": "application/json"
+    },
     "body": {
       "contentType": "application/json",
       "encoded": false,

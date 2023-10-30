@@ -1,8 +1,10 @@
 {
   "match": true,
   "comment": "XML Requests match with regex",
-  "expected" : {
-    "headers": {"Content-Type": "application/xml"},
+  "expected": {
+    "headers": {
+      "Content-Type": "application/xml"
+    },
     "matchingRules": {
       "body": {
         "$.alligator['@name']": {
@@ -22,7 +24,9 @@
     }
   },
   "actual": {
-    "headers": {"Content-Type": "application/xml"},
+    "headers": {
+      "Content-Type": "application/xml"
+    },
     "body": {
       "contentType": "application/xml",
       "encoded": false,

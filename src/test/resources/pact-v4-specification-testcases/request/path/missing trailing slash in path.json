@@ -1,7 +1,7 @@
 {
   "match": false,
   "comment": "Path is missing trailing slash, trailing slashes can matter",
-  "expected" : {
+  "expected": {
     "method": "POST",
     "path": "/path/to/something/",
     "query": {},

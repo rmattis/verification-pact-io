@@ -1,11 +1,14 @@
 {
   "match": false,
   "comment": "Queries are not the same - animals are alligator, hippo versus alligator, elephant",
-  "expected" : {
+  "expected": {
     "method": "GET",
     "path": "/path",
     "query": {
-      "animal": ["alligator", "hippo"]
+      "animal": [
+        "alligator",
+        "hippo"
+      ]
     },
     "headers": {}
   },
@@ -13,7 +16,10 @@
     "method": "GET",
     "path": "/path",
     "query": {
-      "animal": ["alligator", "elephant"]
+      "animal": [
+        "alligator",
+        "elephant"
+      ]
     },
     "headers": {}
   }

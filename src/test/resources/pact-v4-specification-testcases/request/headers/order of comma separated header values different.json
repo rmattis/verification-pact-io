@@ -1,7 +1,7 @@
 {
   "match": false,
   "comment": "Comma separated headers out of order, order can matter http://tools.ietf.org/html/rfc2616",
-  "expected" : {
+  "expected": {
     "method": "POST",
     "path": "/path",
     "query": {},

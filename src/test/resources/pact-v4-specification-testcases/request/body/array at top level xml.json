@@ -5,7 +5,9 @@
     "method": "POST",
     "path": "/",
     "query": {},
-    "headers": {"Content-Type": "application/xml"},
+    "headers": {
+      "Content-Type": "application/xml"
+    },
     "body": {
       "contentType": "application/xml",
       "encoded": false,
@@ -16,7 +18,9 @@
     "method": "POST",
     "path": "/",
     "query": {},
-    "headers": {"Content-Type": "application/xml"},
+    "headers": {
+      "Content-Type": "application/xml"
+    },
     "body": {
       "contentType": "application/xml",
       "encoded": false,

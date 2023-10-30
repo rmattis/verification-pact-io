@@ -1,8 +1,10 @@
 {
   "match": true,
   "comment": "Requests match with regex",
-  "expected" : {
-    "headers": {"Content-Type": "application/json"},
+  "expected": {
+    "headers": {
+      "Content-Type": "application/json"
+    },
     "matchingRules": {
       "body": {
         "$.alligator.name": {
@@ -31,7 +33,9 @@
     }
   },
   "actual": {
-    "headers": {"Content-Type": "application/json"},
+    "headers": {
+      "Content-Type": "application/json"
+    },
     "body": {
       "contentType": "application/json",
       "encoded": false,

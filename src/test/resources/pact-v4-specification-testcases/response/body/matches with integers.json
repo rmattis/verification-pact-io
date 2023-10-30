@@ -1,8 +1,10 @@
 {
   "match": true,
   "comment": "Response match with integers",
-  "expected" : {
-    "headers": {"Content-Type": "application/json"},
+  "expected": {
+    "headers": {
+      "Content-Type": "application/json"
+    },
     "matchingRules": {
       "body": {
         "$.alligator.feet": {
@@ -34,7 +36,9 @@
     "method": "POST",
     "path": "/",
     "query": {},
-    "headers": {"Content-Type": "application/json"},
+    "headers": {
+      "Content-Type": "application/json"
+    },
     "body": {
       "contentType": "application/json",
       "encoded": false,

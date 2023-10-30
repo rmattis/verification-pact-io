@@ -3,12 +3,12 @@
   "comment": "XML array with regex matcher",
   "expected": {
     "headers": {},
-    "body" : {
+    "body": {
       "contentType": "application/xml",
       "encoded": false,
       "content": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><myDates><date>29/10/2015</date></myDates>"
     },
-    "matchingRules" : {
+    "matchingRules": {
       "body": {
         "$.myDates": {
           "matchers": [

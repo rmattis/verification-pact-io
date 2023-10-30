@@ -1,7 +1,7 @@
 {
   "match": true,
   "comment": "Paths match with regex",
-  "expected" : {
+  "expected": {
     "method": "POST",
     "path": "/path/to/1234",
     "query": {},

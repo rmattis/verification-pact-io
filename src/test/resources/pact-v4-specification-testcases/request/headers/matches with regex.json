@@ -1,7 +1,7 @@
 {
   "match": true,
   "comment": "Headers match with regexp",
-  "expected" : {
+  "expected": {
     "method": "POST",
     "path": "/path",
     "headers": {

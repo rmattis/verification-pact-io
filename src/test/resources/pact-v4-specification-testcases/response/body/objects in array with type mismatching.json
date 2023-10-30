@@ -34,10 +34,13 @@
   },
   "actual": {
     "headers": {},
-    "body": [{
-      "name": "Peter Peterson",
-      "age": 22,
-      "gender": "Male"
-    }, {}]
+    "body": [
+      {
+        "name": "Peter Peterson",
+        "age": 22,
+        "gender": "Male"
+      },
+      {}
+    ]
   }
 }

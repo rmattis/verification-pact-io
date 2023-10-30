@@ -1,10 +1,12 @@
 {
   "match": true,
   "comment": "Missing body, no content-type",
-  "expected" : {
+  "expected": {
   },
   "actual": {
-    "headers": {"Content-Type": "application/json"},
+    "headers": {
+      "Content-Type": "application/json"
+    },
     "body": {
       "contentType": "application/json",
       "encoded": false,

@@ -1,12 +1,16 @@
 {
   "match": false,
   "comment": "Queries are not the same - hippo is Fred instead of John",
-  "expected" : {
+  "expected": {
     "method": "GET",
     "path": "/path",
     "query": {
-      "alligator": ["Mary"],
-      "hippo": ["John"]
+      "alligator": [
+        "Mary"
+      ],
+      "hippo": [
+        "John"
+      ]
     },
     "headers": {}
   },
@@ -14,8 +18,12 @@
     "method": "GET",
     "path": "/path",
     "query": {
-      "alligator": ["Mary"],
-      "hippo": ["Fred"]
+      "alligator": [
+        "Mary"
+      ],
+      "hippo": [
+        "Fred"
+      ]
     },
     "headers": {}
   }

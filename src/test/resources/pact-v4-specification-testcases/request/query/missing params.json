@@ -1,13 +1,19 @@
 {
   "match": false,
   "comment": "Queries are not the same - elephant is missing",
-  "expected" : {
+  "expected": {
     "method": "GET",
     "path": "/path",
     "query": {
-      "alligator": ["Mary"],
-      "hippo": ["Fred"],
-      "elephant": ["missing"]
+      "alligator": [
+        "Mary"
+      ],
+      "hippo": [
+        "Fred"
+      ],
+      "elephant": [
+        "missing"
+      ]
     },
     "headers": {}
   },
@@ -15,8 +21,12 @@
     "method": "GET",
     "path": "/path",
     "query": {
-      "alligator": ["Mary"],
-      "hippo": ["Fred"]
+      "alligator": [
+        "Mary"
+      ],
+      "hippo": [
+        "Fred"
+      ]
     },
     "headers": {}
   }

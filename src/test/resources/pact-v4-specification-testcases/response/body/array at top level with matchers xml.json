@@ -2,13 +2,15 @@
   "match": true,
   "comment": "XML top level array matches",
   "expected": {
-    "headers": {"Content-Type": "application/xml"},
-    "body" : {
+    "headers": {
+      "Content-Type": "application/xml"
+    },
+    "body": {
       "contentType": "application/xml",
       "encoded": false,
       "content": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><people><person dob=\"06/10/2015\" name=\"Rogger the Dogger\" id=\"1014753708\" timestamp=\"2015-06-10T20:41:37\"/><cat dob=\"06/10/2015\" name=\"Cat in the Hat\" id=\"8858030303\" timestamp=\"2015-06-10T20:41:37\"/></people>"
     },
-    "matchingRules" : {
+    "matchingRules": {
       "body": {
         "$.people.*['@id']": {
           "matchers": [
@@ -44,7 +46,9 @@
     }
   },
   "actual": {
-    "headers": {"Content-Type": "application/xml"},
+    "headers": {
+      "Content-Type": "application/xml"
+    },
     "body": {
       "contentType": "application/xml",
       "encoded": false,

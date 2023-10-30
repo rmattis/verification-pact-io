@@ -1,11 +1,13 @@
 {
   "match": true,
   "comment": "XML Tag with at least one element match",
-  "expected" : {
+  "expected": {
     "method": "POST",
     "path": "/",
     "query": {},
-    "headers": {"Content-Type": "application/xml"},
+    "headers": {
+      "Content-Type": "application/xml"
+    },
     "matchingRules": {
       "body": {
         "$.animals": {
@@ -35,7 +37,9 @@
     "method": "POST",
     "path": "/",
     "query": {},
-    "headers": {"Content-Type": "application/xml"},
+    "headers": {
+      "Content-Type": "application/xml"
+    },
     "body": {
       "contentType": "application/xml",
       "encoded": false,

@@ -1,11 +1,13 @@
 {
   "match": false,
   "comment": "Types and regular expressions match",
-  "expected" : {
+  "expected": {
     "method": "POST",
     "path": "/",
     "query": {},
-    "headers": {"Content-Type": "application/xml"},
+    "headers": {
+      "Content-Type": "application/xml"
+    },
     "matchingRules": {
       "body": {
         "$.animals": {
@@ -50,7 +52,9 @@
     "method": "POST",
     "path": "/",
     "query": {},
-    "headers": {"Content-Type": "application/xml"},
+    "headers": {
+      "Content-Type": "application/xml"
+    },
     "body": {
       "contentType": "application/xml",
       "encoded": false,

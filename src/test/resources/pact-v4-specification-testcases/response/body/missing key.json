@@ -1,8 +1,10 @@
 {
   "match": false,
   "comment": "Missing key alligator name",
-  "expected" : {
-    "headers": {"Content-Type": "application/json"},
+  "expected": {
+    "headers": {
+      "Content-Type": "application/json"
+    },
     "body": {
       "contentType": "application/json",
       "encoded": false,
@@ -15,7 +17,9 @@
     }
   },
   "actual": {
-    "headers": {"Content-Type": "application/json"},
+    "headers": {
+      "Content-Type": "application/json"
+    },
     "body": {
       "contentType": "application/json",
       "encoded": false,

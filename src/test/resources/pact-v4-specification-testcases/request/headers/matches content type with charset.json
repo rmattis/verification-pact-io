@@ -1,7 +1,7 @@
 {
   "match": true,
   "comment": "Headers match when the actual includes additional parameters",
-  "expected" : {
+  "expected": {
     "method": "POST",
     "path": "/path",
     "query": {},

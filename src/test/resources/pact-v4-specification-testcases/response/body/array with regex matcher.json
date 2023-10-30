@@ -3,7 +3,7 @@
   "comment": "array with regex matcher",
   "expected": {
     "headers": {},
-    "body" : {
+    "body": {
       "contentType": "application/json",
       "encoded": false,
       "content": {
@@ -12,7 +12,7 @@
         ]
       }
     },
-    "matchingRules" : {
+    "matchingRules": {
       "body": {
         "$.myDates": {
           "matchers": [
@@ -44,6 +44,6 @@
           "30/06/2015"
         ]
       }
-    }    
+    }
   }
 }

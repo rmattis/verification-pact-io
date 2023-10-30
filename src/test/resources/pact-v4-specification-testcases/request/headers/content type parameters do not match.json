@@ -1,7 +1,7 @@
 {
   "match": false,
   "comment": "Headers don't match when the parameters are different",
-  "expected" : {
+  "expected": {
     "method": "POST",
     "path": "/path",
     "query": {},

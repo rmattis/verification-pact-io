@@ -1,7 +1,7 @@
 {
   "match": true,
   "comment": "Headers match when the content type parameters are in a different order",
-  "expected" : {
+  "expected": {
     "method": "POST",
     "path": "/path",
     "query": {},

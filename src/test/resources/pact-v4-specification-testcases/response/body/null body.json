@@ -1,14 +1,18 @@
 {
   "match": true,
   "comment": "NULL body",
-  "expected" : {
-    "headers": {"Content-Type": "application/json"},
+  "expected": {
+    "headers": {
+      "Content-Type": "application/json"
+    },
     "body": {
       "content": null
     }
   },
   "actual": {
-    "headers": {"Content-Type": "application/json"},
+    "headers": {
+      "Content-Type": "application/json"
+    },
     "body": {
       "content": null
     }

@@ -1,7 +1,7 @@
 {
   "match": true,
   "comment": "Headers match with regex",
-  "expected" : {
+  "expected": {
     "headers": {
       "Accept": "alligators",
       "Content-Type": "hippos"

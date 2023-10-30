@@ -1,7 +1,7 @@
 {
   "match": true,
   "comment": "Whitespace between comma separated headers does not matter",
-  "expected" : {
+  "expected": {
     "headers": {
       "Accept": "alligators,hippos"
     }

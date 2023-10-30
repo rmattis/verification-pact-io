@@ -1,7 +1,7 @@
 {
   "match": true,
   "comment": "Extra headers allowed",
-  "expected" : {
+  "expected": {
     "method": "POST",
     "path": "/path",
     "query": {},

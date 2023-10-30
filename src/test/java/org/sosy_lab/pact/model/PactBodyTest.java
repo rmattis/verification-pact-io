@@ -9,15 +9,19 @@ import java.util.Optional;
 
 public class PactBodyTest {
 
-    @TestFactory
-    public List<DynamicTest> makeSureAllPactV4TestcaseBodiesCanBeDecoded() {
-        var testDirectories = List.of("pact-v4-specification-testcases/response/body", "pact-v4-specification-testcases/request/body");
+  @TestFactory
+  public List<DynamicTest> makeSureAllPactV4TestcaseBodiesCanBeDecoded() {
+    var testDirectories =
+        List.of(
+            "pact-v4-specification-testcases/response/body",
+            "pact-v4-specification-testcases/request/body");
 
-        return DecodingTestHelper.testDecodingForFileDirectories(testDirectories,
-                jsonNode -> jsonNode.has("body")
-                        ? Optional.of(jsonNode.required("expected").required("body"))
-                        : Optional.empty(),
-                PactBody.class);
-    }
-
+    return DecodingTestHelper.testDecodingForFileDirectories(
+        testDirectories,
+        jsonNode ->
+            jsonNode.has("body")
+                ? Optional.of(jsonNode.required("expected").required("body"))
+                : Optional.empty(),
+        PactBody.class);
+  }
 }

@@ -1,11 +1,15 @@
 {
   "match": false,
   "comment": "Queries are not the same - values are in different order",
-  "expected" : {
+  "expected": {
     "method": "GET",
     "path": "/path",
     "query": {
-      "animal": ["alligator", "hippo", "elephant"]
+      "animal": [
+        "alligator",
+        "hippo",
+        "elephant"
+      ]
     },
     "headers": {}
   },
@@ -13,7 +17,11 @@
     "method": "GET",
     "path": "/path",
     "query": {
-      "animal": ["hippo", "alligator", "elephant"]
+      "animal": [
+        "hippo",
+        "alligator",
+        "elephant"
+      ]
     },
     "headers": {}
   }

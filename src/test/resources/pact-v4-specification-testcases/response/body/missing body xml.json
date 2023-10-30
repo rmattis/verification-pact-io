@@ -1,11 +1,15 @@
 {
   "match": true,
   "comment": "XML Missing body",
-  "expected" : {
-    "headers": {"Content-Type": "application/xml"}
+  "expected": {
+    "headers": {
+      "Content-Type": "application/xml"
+    }
   },
   "actual": {
-    "headers": {"Content-Type": "application/xml"},
+    "headers": {
+      "Content-Type": "application/xml"
+    },
     "body": {
       "contentType": "application/xml",
       "encoded": false,

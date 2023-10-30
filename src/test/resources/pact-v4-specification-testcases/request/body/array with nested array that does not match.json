@@ -1,11 +1,13 @@
 {
   "match": false,
   "comment": "Nested arrays do not match, age is wrong type",
-  "expected" : {
+  "expected": {
     "method": "POST",
     "path": "/",
     "query": {},
-    "headers": {"Content-Type": "application/json"},
+    "headers": {
+      "Content-Type": "application/json"
+    },
     "matchingRules": {
       "body": {
         "$.animals": {
@@ -61,7 +63,9 @@
     "method": "POST",
     "path": "/",
     "query": {},
-    "headers": {"Content-Type": "application/json"},
+    "headers": {
+      "Content-Type": "application/json"
+    },
     "body": {
       "contentType": "application/json",
       "encoded": false,

@@ -1,7 +1,7 @@
 {
   "match": true,
   "comment": "XML No body, no content-type",
-  "expected" : {
+  "expected": {
     "method": "POST",
     "path": "/",
     "query": {}
@@ -10,7 +10,9 @@
     "method": "POST",
     "path": "/",
     "query": {},
-    "headers": {"Content-Type": "application/xml"},
+    "headers": {
+      "Content-Type": "application/xml"
+    },
     "body": {
       "contentType": "application/xml",
       "encoded": false,

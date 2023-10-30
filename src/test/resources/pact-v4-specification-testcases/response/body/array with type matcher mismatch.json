@@ -3,7 +3,7 @@
   "comment": "array with type matcher mismatch",
   "expected": {
     "headers": {},
-    "body" : {
+    "body": {
       "contentType": "application/json",
       "encoded": false,
       "content": {
@@ -12,7 +12,7 @@
         ]
       }
     },
-    "matchingRules" : {
+    "matchingRules": {
       "body": {
         "$.myDates[*]": {
           "matchers": [
@@ -36,6 +36,6 @@
           "100299"
         ]
       }
-    }    
+    }
   }
-}   
+}

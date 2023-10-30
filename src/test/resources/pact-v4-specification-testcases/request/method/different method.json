@@ -1,7 +1,7 @@
 {
   "match": false,
   "comment": "Methods is incorrect",
-  "expected" : {
+  "expected": {
     "method": "POST",
     "path": "/",
     "query": {},
@@ -12,6 +12,5 @@
     "path": "/",
     "query": {},
     "headers": {}
-
   }
 }

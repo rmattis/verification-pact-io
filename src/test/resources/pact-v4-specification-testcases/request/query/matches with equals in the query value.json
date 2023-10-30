@@ -1,12 +1,16 @@
 {
   "match": true,
   "comment": "Queries are equivalent",
-  "expected" : {
+  "expected": {
     "method": "GET",
     "path": "/path",
     "query": {
-      "options": ["delete.topic.enable=true"],
-      "broker": ["1"]
+      "options": [
+        "delete.topic.enable=true"
+      ],
+      "broker": [
+        "1"
+      ]
     },
     "headers": {}
   },
@@ -14,8 +18,12 @@
     "method": "GET",
     "path": "/path",
     "query": {
-      "options": ["delete.topic.enable=true"],
-      "broker": ["1"]
+      "options": [
+        "delete.topic.enable=true"
+      ],
+      "broker": [
+        "1"
+      ]
     },
     "headers": {}
   }

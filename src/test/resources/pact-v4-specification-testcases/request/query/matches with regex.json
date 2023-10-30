@@ -1,12 +1,16 @@
 {
   "match": true,
   "comment": "Queries match with regex",
-  "expected" : {
+  "expected": {
     "method": "GET",
     "path": "/path",
     "query": {
-      "alligator": ["Mary"],
-      "hippo": ["John"]
+      "alligator": [
+        "Mary"
+      ],
+      "hippo": [
+        "John"
+      ]
     },
     "headers": {},
     "matchingRules": {
@@ -26,8 +30,12 @@
     "method": "GET",
     "path": "/path",
     "query": {
-      "alligator": ["Mary"],
-      "hippo": ["Fred"]
+      "alligator": [
+        "Mary"
+      ],
+      "hippo": [
+        "Fred"
+      ]
     },
     "headers": {}
   }

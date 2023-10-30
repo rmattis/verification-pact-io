@@ -1,12 +1,18 @@
 {
   "match": true,
   "comment": "Queries are the same - multiple values are in same order",
-  "expected" : {
+  "expected": {
     "method": "GET",
     "path": "/path",
     "query": {
-      "animal": ["alligator", "hippo", "elephant"],
-      "hippo": ["Fred"]
+      "animal": [
+        "alligator",
+        "hippo",
+        "elephant"
+      ],
+      "hippo": [
+        "Fred"
+      ]
     },
     "headers": {}
   },
@@ -14,8 +20,14 @@
     "method": "GET",
     "path": "/path",
     "query": {
-      "hippo": ["Fred"],
-      "animal": ["alligator", "hippo", "elephant"]
+      "hippo": [
+        "Fred"
+      ],
+      "animal": [
+        "alligator",
+        "hippo",
+        "elephant"
+      ]
     },
     "headers": {}
   }
