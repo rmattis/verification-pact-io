@@ -1,0 +1,315 @@
+{
+  "consumer": {
+    "name": "FrontendApplication"
+  },
+  "interactions": [
+    {
+      "comments": {
+        "text": [
+        ]
+      },
+      "description": "get all products",
+      "key": "a4808de5",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "no products exist"
+        }
+      ],
+      "request": {
+        "headers": {
+          "Authorization": [
+            "Bearer 2004-02-07T21:55"
+          ]
+        },
+        "matchingRules": {
+          "header": {
+            "Authorization": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "Bearer (19|20)\\d\\d-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][1-9]|2[0123]):[0-5][0-9]"
+                }
+              ]
+            }
+          }
+        },
+        "method": "GET",
+        "path": "/products"
+      },
+      "response": {
+        "body": {
+          "content": [
+          ],
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json; charset=utf-8"
+          ]
+        },
+        "status": 200
+      },
+      "type": "Synchronous/HTTP"
+    },
+    {
+      "comments": {
+        "text": [
+        ]
+      },
+      "description": "get product by ID 10 with no auth token",
+      "key": "7248bf9f",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "product with ID 10 exists"
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/product/10"
+      },
+      "response": {
+        "status": 401
+      },
+      "type": "Synchronous/HTTP"
+    },
+    {
+      "comments": {
+        "text": [
+        ]
+      },
+      "description": "get product with ID 10",
+      "key": "a501d946",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "product with ID 10 exists"
+        }
+      ],
+      "request": {
+        "headers": {
+          "Authorization": [
+            "Bearer 1917-09-30T13:53"
+          ]
+        },
+        "matchingRules": {
+          "header": {
+            "Authorization": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "Bearer (19|20)\\d\\d-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][1-9]|2[0123]):[0-5][0-9]"
+                }
+              ]
+            }
+          }
+        },
+        "method": "GET",
+        "path": "/product/10"
+      },
+      "response": {
+        "body": {
+          "content": {
+            "id": "10",
+            "name": "28 Degrees",
+            "type": "CREDIT_CARD"
+          },
+          "contentType": "application/json; charset=utf-8",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json; charset=utf-8"
+          ]
+        },
+        "matchingRules": {
+          "body": {
+            "$.id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.2": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "equality"
+                }
+              ]
+            },
+            "$.3": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "equality"
+                }
+              ]
+            },
+            "$.name": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.type": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 200
+      },
+      "type": "Synchronous/HTTP"
+    },
+    {
+      "comments": {
+        "text": [
+        ]
+      },
+      "description": "get product with ID 11",
+      "key": "1bdc630b",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "product with ID 11 does not exist"
+        }
+      ],
+      "request": {
+        "headers": {
+          "Authorization": [
+            "Bearer 1916-02-01T21:49"
+          ]
+        },
+        "matchingRules": {
+          "header": {
+            "Authorization": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "Bearer (19|20)\\d\\d-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][1-9]|2[0123]):[0-5][0-9]"
+                }
+              ]
+            }
+          }
+        },
+        "method": "GET",
+        "path": "/product/11"
+      },
+      "response": {
+        "status": 404
+      },
+      "type": "Synchronous/HTTP"
+    },
+    {
+      "comments": {
+        "text": [
+        ]
+      },
+      "description": "get all products",
+      "key": "1ee6644",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "products exist"
+        }
+      ],
+      "request": {
+        "headers": {
+          "Authorization": [
+            "Bearer 1927-11-11T12:45"
+          ]
+        },
+        "matchingRules": {
+          "header": {
+            "Authorization": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "Bearer (19|20)\\d\\d-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][1-9]|2[0123]):[0-5][0-9]"
+                }
+              ]
+            }
+          }
+        },
+        "method": "GET",
+        "path": "/products"
+      },
+      "response": {
+        "body": {
+          "content": [
+          ],
+          "contentType": "application/json; charset=utf-8",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json; charset=utf-8"
+          ]
+        },
+        "matchingRules": {
+          "body": {
+            "$": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type",
+                  "min": 2
+                }
+              ]
+            }
+          }
+        },
+        "status": 200
+      },
+      "type": "Synchronous/HTTP"
+    },
+    {
+      "comments": {
+        "text": [
+        ]
+      },
+      "description": "get all products with no auth token",
+      "key": "4f33ee88",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "products exist"
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/products"
+      },
+      "response": {
+        "status": 401
+      },
+      "type": "Synchronous/HTTP"
+    }
+  ],
+  "metadata": {
+    "pact-jvm": {
+      "version": "4.3.10"
+    },
+    "pactSpecification": {
+      "version": "4.0"
+    }
+  },
+  "provider": {
+    "name": "ProductService"
+  }
+}

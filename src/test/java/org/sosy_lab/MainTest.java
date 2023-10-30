@@ -13,13 +13,12 @@ import java.util.List;
 
 public class MainTest {
 
+    private static final List<String> possibleCommands = List.of("-h", "--help", "--version",
+            "printMatchingRules --help", "printMatchingRules -h",
+            "printMatchingRules --version", "printMatchingRules test.json");
     private final Main main = new Main();
     private final CommandLine commandLine = new CommandLine(main);
     private final StringWriter stringWriter = new StringWriter();
-
-    private static final List<String> possibleCommands = List.of("-h", "--help", "--version",
-            "printMatchingRules --help", "printMatchingRules -h",
-            "printMatchingRules --version", "printMatchingRules test", "printMatchingRules test.json");
 
     @BeforeEach
     public void beforeEach() {
