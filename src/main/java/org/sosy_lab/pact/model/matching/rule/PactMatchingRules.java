@@ -8,7 +8,7 @@ import java.util.Optional;
 
 /**
  * The matching rules are stored as a key/value map where the key is the category that matchers are applied to.
- * Categories are string values, but the current supported ones are: body, header, path, query, metadata.
+ * The matching rules supported are body, header, path, query and metadata.
  *
  * @param body     key/value map with the matchingRules for body
  * @param header   key/value map with the matchingRules for header

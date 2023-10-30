@@ -34,9 +34,9 @@ public class PrintMatchingRulesCommand implements Callable<Integer> {
     private final PactFileParser pactFileParser;
 
     public PrintMatchingRulesCommand() {
-        this.pactFileParser = new PactFileParser();
+        pactFileParser = new PactFileParser();
 
-        this.objectMapper = new ObjectMapper();
+        objectMapper = new ObjectMapper();
         objectMapper.registerModule(new Jdk8Module());
     }
 
@@ -56,11 +56,11 @@ public class PrintMatchingRulesCommand implements Callable<Integer> {
                 System.out.println("- " + interaction.description());
                 interaction.request().ifPresent(request -> {
                     System.out.println("  - Request ");
-                    printMatchingRules(request.matchingRules());
+                    request.matchingRules().ifPresentOrElse(this::printMatchingRules, this::printNoMatchingRules);
                 });
                 interaction.response().ifPresent(response -> {
                     System.out.println("  - Response ");
-                    printMatchingRules(response.matchingRules());
+                    response.matchingRules().ifPresentOrElse(this::printMatchingRules, this::printNoMatchingRules);
                 });
             });
         } catch (IOException e) {
@@ -72,36 +72,37 @@ public class PrintMatchingRulesCommand implements Callable<Integer> {
     }
 
     /**
+     * There are no matching rules defined for the request / response.
+     */
+    private void printNoMatchingRules() {
+        System.out.println("    - No matching rules ");
+    }
+
+    /**
      * Helper method to print all matching rules for request or response
      */
-    private void printMatchingRules(Optional<PactMatchingRules> matchingRulesOpt) {
-        matchingRulesOpt.ifPresent(matchingRules -> {
-            System.out.println("    - Body ");
-            printMatchingRuleMap(matchingRules.body());
-            System.out.println("    - Header ");
-            printMatchingRuleMap(matchingRules.header());
-            System.out.println("    - Metadata ");
-            printMatchingRuleMap(matchingRules.metadata());
-            System.out.println("    - Path ");
-            if(matchingRules.path().isPresent()) {
-                printSingleRule("path", matchingRules.path().get());
-            } else {
-                System.out.println("      No matching rules found ");
-            }
-            System.out.println("    - Query ");
-            printMatchingRuleMap(matchingRules.query());
-        });
+    private void printMatchingRules(PactMatchingRules matchingRules) {
+        System.out.println("    - Body ");
+        printMatchingRuleMap(matchingRules.body());
+        System.out.println("    - Header ");
+        printMatchingRuleMap(matchingRules.header());
+        System.out.println("    - Metadata ");
+        printMatchingRuleMap(matchingRules.metadata());
+        System.out.println("    - Path ");
+        if (matchingRules.path().isPresent()) {
+            printSingleRule("path", matchingRules.path().get());
+        } else {
+            System.out.println("      No matching rules found ");
+        }
+        System.out.println("    - Query ");
+        printMatchingRuleMap(matchingRules.query());
     }
 
     /**
      * Helper method to print an optional matching rule map
      */
     private void printMatchingRuleMap(Optional<Map<String, PactMatchingRule>> matchingRule) {
-        if (matchingRule.isPresent()) {
-            matchingRule.get().forEach(this::printSingleRule);
-        } else {
-            System.out.println("      No matching rules found ");
-        }
+        matchingRule.ifPresentOrElse(rule -> rule.forEach(this::printSingleRule), () -> System.out.println("      No " + "matching rules found "));
     }
 
     /**

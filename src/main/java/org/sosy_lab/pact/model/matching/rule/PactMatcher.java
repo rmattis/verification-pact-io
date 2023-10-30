@@ -3,7 +3,11 @@ package org.sosy_lab.pact.model.matching.rule;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import org.sosy_lab.pact.model.matching.rule.rules.*;
+import org.sosy_lab.pact.model.matching.rule.rules.MinMatcher;
+import org.sosy_lab.pact.model.matching.rule.rules.MaxMatcher;
+import org.sosy_lab.pact.model.matching.rule.rules.MinMaxMatcher;
+import org.sosy_lab.pact.model.matching.rule.rules.EqualityMatcher;
+import org.sosy_lab.pact.model.matching.rule.rules.RegexMatcher;
 
 /**
  * Abstract class for pact matchers from matching rules.

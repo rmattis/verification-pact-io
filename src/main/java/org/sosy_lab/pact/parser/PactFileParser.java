@@ -16,7 +16,7 @@ public class PactFileParser {
     private final ObjectMapper objectMapper;
 
     public PactFileParser() {
-        this.objectMapper = new ObjectMapper();
+        objectMapper = new ObjectMapper();
         objectMapper.registerModule(new Jdk8Module());
     }
 

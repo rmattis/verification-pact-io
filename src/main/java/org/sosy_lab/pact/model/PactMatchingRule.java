@@ -19,6 +19,8 @@ public record PactMatchingRule(Optional<String> combine, List<PactMatcher> match
 
     public PactMatchingRule(Optional<String> combine, List<PactMatcher> matchers) {
         this.combine = combine;
+        // We need to manually override the MinMaxMatchers where max, min or both are empty
+        // as Jackson can't handle having multiple properties with the same value for JsonSubTypes.
         this.matchers = matchers.stream().map(matcher -> switch (matcher) {
             case MinMaxMatcher minMaxMatcher when minMaxMatcher.getMax().isEmpty() && minMaxMatcher.getMin().isEmpty() ->
                     new TypeMatcher();
