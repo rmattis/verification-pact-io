@@ -9,7 +9,8 @@ import java.util.List;
  * @param httpMethod The http method used of this endpoint.
  * @param endpointPaths The paths of this endpoint (e.g. "/product/{id}")
  * @param parameters The parameters used in the function of this endpoint.
- * @param returnType The returnType of this endpoint (e.g. "List<Product>")
+ * @param returnType The returnType of this endpoint (e.g.
+ *     "java.util.List<au.com.dius.pactworkshop.provider.Product>")
  */
 public record SpringEndpointMethod(
     String methodName,

@@ -25,12 +25,13 @@ public class JarFileLoaderTest {
           jarFileLoader.readSpringControllerClasses(
               new File(getClass().getClassLoader().getResource("provider.jar").getFile()));
 
+      System.out.println(controllerClasses);
+
       Assertions.assertEquals(controllerClasses.size(), 1);
 
       SpringControllerClass controllerClass = controllerClasses.get(0);
-      Assertions.assertEquals(
-          controllerClass.name(), "au.com.dius.pactworkshop.provider.ProductController");
-      Assertions.assertEquals(controllerClass.methods().size(), 2);
+      Assertions.assertEquals("au.com.dius.pactworkshop.provider.ProductController", controllerClass.name());
+      Assertions.assertEquals(3, controllerClass.methods().size());
 
       SpringEndpointMethod getAllProductsMethod =
           new SpringEndpointMethod(
@@ -48,8 +49,16 @@ public class JarFileLoaderTest {
               List.of(new SpringMethodParameter("id", "java.lang.String")),
               "org.springframework.http.ResponseEntity<au.com.dius.pactworkshop.provider.Product>");
 
+      SpringEndpointMethod getAverageTemperatureByYearEndpoint =
+              new SpringEndpointMethod(
+                      "getAverageTemperatureByYear",
+                      HttpMethod.GET,
+                      List.of("temperature/{year}"),
+                      List.of(new SpringMethodParameter("year", "int")),
+                      "au.com.dius.pactworkshop.provider.YearTemperature");
+
       Assertions.assertEquals(
-          controllerClass.methods(), List.of(getAllProductsMethod, getProductByIdEndpoint));
+          controllerClass.methods(), List.of(getAllProductsMethod, getProductByIdEndpoint, getAverageTemperatureByYearEndpoint));
 
     } catch (IOException e) {
       throw new RuntimeException(e);

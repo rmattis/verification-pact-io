@@ -1,16 +1,22 @@
 package org.sosy_lab.jar;
 
+import javassist.ClassPool;
+import javassist.CtClass;
+import javassist.CtMethod;
 import javassist.bytecode.*;
 import javassist.bytecode.annotation.Annotation;
 import javassist.bytecode.annotation.ArrayMemberValue;
 import javassist.bytecode.annotation.StringMemberValue;
+import org.sosy_lab.jar.exception.ClassLoadFailedException;
+import org.sosy_lab.jar.exception.UnknownSpringMappingAnnotationException;
+import org.sosy_lab.jar.exception.WrongMethodSignatureException;
 import org.sosy_lab.jar.model.HttpMethod;
 import org.sosy_lab.jar.model.SpringControllerClass;
 import org.sosy_lab.jar.model.SpringEndpointMethod;
 import org.sosy_lab.jar.model.SpringMethodParameter;
 
-import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -52,15 +58,14 @@ public class JarFileLoader {
    */
   public List<SpringControllerClass> readSpringControllerClasses(File file) throws IOException {
     if (!file.exists()) {
-      throw new RuntimeException("File does not exist");
+      throw new FileNotFoundException("File " + file.getName() + " does not exist");
     }
 
     JarFile jarFile = new JarFile(file);
-    List<JarEntry> jarEntries = jarFile.stream().toList();
 
     // Read all classFiles included in the jar file.
-    List<ClassFile> classFiles =
-        jarEntries.stream()
+    List<CtClass> classFiles =
+        jarFile.stream()
             .filter(jarEntry -> jarEntry != null && jarEntry.getName().endsWith(".class"))
             .map(jarEntry -> jarMethodToJarFile(jarFile, jarEntry))
             .toList();
@@ -77,23 +82,28 @@ public class JarFileLoader {
    * @param jarFile The jarFile we read the jarEntry from.
    * @param jarEntry The jarEntry that is part of the jarFile.
    */
-  private ClassFile jarMethodToJarFile(JarFile jarFile, JarEntry jarEntry) {
+  private CtClass jarMethodToJarFile(JarFile jarFile, JarEntry jarEntry) {
     try {
-      return new ClassFile(new DataInputStream(jarFile.getInputStream(jarEntry)));
+      return ClassPool.getDefault().makeClass(jarFile.getInputStream(jarEntry));
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new ClassLoadFailedException(
+          "Couldn't load jarFile class from jarEntry "
+              + jarEntry.getName()
+              + " from jarFile "
+              + jarFile.getName(),
+          e);
     }
   }
 
   /**
    * With this filter, we'll return all classes that are annotated with the spring @RestController
    *
-   * @param classFile The classFile we want to check.
+   * @param ctClass The CtClass we want to check.
    * @return Whether the class as a @RestController annotation or not.
    */
-  private boolean filterRestControllerClasses(ClassFile classFile) {
+  private boolean filterRestControllerClasses(CtClass ctClass) {
     AnnotationsAttribute annotationsAttribute =
-        (AnnotationsAttribute) classFile.getAttribute(AnnotationsAttribute.visibleTag);
+        (AnnotationsAttribute) ctClass.getClassFile().getAttribute(AnnotationsAttribute.visibleTag);
 
     Stream<Annotation> annotations =
         annotationsAttribute == null
@@ -101,39 +111,33 @@ public class JarFileLoader {
             : Arrays.stream(annotationsAttribute.getAnnotations());
 
     return annotations.anyMatch(
-        annotation ->
-            annotation
-                .getTypeName()
-                .equals("org.springframework.web.bind.annotation.RestController"));
+        annotation -> annotation.getTypeName().equals(SPRING_ANNOTATION_NAME + ".RestController"));
   }
 
   /**
    * Returns the spring controller class for a given classFile.
    *
-   * @param classFile The classFile for a class.
+   * @param ctClass The CtClass for a class.
    */
-  private SpringControllerClass classToSpringController(ClassFile classFile) {
+  private SpringControllerClass classToSpringController(CtClass ctClass) {
     List<SpringEndpointMethod> endpointMethods =
-        classFile.getMethods().stream()
-            .filter(MethodInfo::isMethod)
+        Arrays.stream(ctClass.getMethods())
             .filter(this::filterSpringEndpointMethods)
             .map(this::methodInfoToSpringEndpoint)
             .toList();
 
-    return new SpringControllerClass(classFile.getName(), endpointMethods);
+    return new SpringControllerClass(ctClass.getName(), ctClass, endpointMethods);
   }
 
   /**
    * Returns the spring endpoint method for a given methodInfo.
    *
-   * @param methodInfo The information about the method.
+   * @param ctMethod The information about the method.
    */
-  private SpringEndpointMethod methodInfoToSpringEndpoint(MethodInfo methodInfo) {
+  private SpringEndpointMethod methodInfoToSpringEndpoint(CtMethod ctMethod) {
+    MethodInfo methodInfo = ctMethod.getMethodInfo();
     MethodParametersAttribute methodParametersAttribute =
         (MethodParametersAttribute) methodInfo.getAttribute(MethodParametersAttribute.tag);
-
-    SignatureAttribute signatureAttribute =
-        (SignatureAttribute) methodInfo.getAttribute(SignatureAttribute.tag);
 
     AnnotationsAttribute annotationsAttribute =
         (AnnotationsAttribute) methodInfo.getAttribute(AnnotationsAttribute.visibleTag);
@@ -149,7 +153,10 @@ public class JarFileLoader {
         annotation -> {
           httpMethod.set(annotationToHttpMethod.get(annotation.getTypeName()));
 
-          ArrayMemberValue valueArray = (ArrayMemberValue) annotation.getMemberValue("value");
+          ArrayMemberValue valueArray =
+              annotation.getMemberValue("value") != null
+                  ? (ArrayMemberValue) annotation.getMemberValue("value")
+                  : (ArrayMemberValue) annotation.getMemberValue("path");
 
           List<String> endpointPaths =
               Arrays.stream(valueArray.getValue())
@@ -158,12 +165,16 @@ public class JarFileLoader {
           endpointPath.set(endpointPaths);
         },
         () -> {
-          throw new RuntimeException("Failed to find spring annotation for method");
+          throw new UnknownSpringMappingAnnotationException(
+              "Failed to find spring annotation for method " + methodInfo.getName());
         });
 
     try {
       SignatureAttribute.MethodSignature methodSignature =
-          SignatureAttribute.toMethodSignature(signatureAttribute.getSignature());
+          SignatureAttribute.toMethodSignature(
+              ctMethod.getGenericSignature() != null
+                  ? ctMethod.getGenericSignature()
+                  : ctMethod.getSignature());
 
       List<SpringMethodParameter> methodParameters =
           methodParametersAttribute == null
@@ -185,7 +196,8 @@ public class JarFileLoader {
           methodParameters,
           methodSignature.getReturnType().jvmTypeName());
     } catch (BadBytecode e) {
-      throw new RuntimeException(e);
+      throw new WrongMethodSignatureException(
+          "Failed to read methodSignature from method's signature", e);
     }
   }
 
@@ -194,12 +206,13 @@ public class JarFileLoader {
    * an @GetMapping annotation will be returned then. A method without annotation won't be returned
    * in this filter.
    *
-   * @param methodInfo The methodInformation for the method
+   * @param ctMethod The ctMethod for the method
    * @return Whether this is a method for a spring endpoint or not.
    */
-  private boolean filterSpringEndpointMethods(MethodInfo methodInfo) {
+  private boolean filterSpringEndpointMethods(CtMethod ctMethod) {
     AnnotationsAttribute annotationsAttribute =
-        (AnnotationsAttribute) methodInfo.getAttribute(AnnotationsAttribute.visibleTag);
+        (AnnotationsAttribute)
+            ctMethod.getMethodInfo().getAttribute(AnnotationsAttribute.visibleTag);
 
     return annotationsAttribute != null
         && Stream.of(annotationsAttribute.getAnnotations())
