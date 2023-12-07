@@ -1,19 +1,15 @@
 package org.sosy_lab.jar;
 
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.CtMethod;
+import javassist.*;
 import javassist.bytecode.*;
 import javassist.bytecode.annotation.Annotation;
 import javassist.bytecode.annotation.ArrayMemberValue;
 import javassist.bytecode.annotation.StringMemberValue;
 import org.sosy_lab.jar.exception.ClassLoadFailedException;
+import org.sosy_lab.jar.exception.ClassNotFoundInClassPathException;
 import org.sosy_lab.jar.exception.UnknownSpringMappingAnnotationException;
 import org.sosy_lab.jar.exception.WrongMethodSignatureException;
-import org.sosy_lab.jar.model.HttpMethod;
-import org.sosy_lab.jar.model.SpringControllerClass;
-import org.sosy_lab.jar.model.SpringEndpointMethod;
-import org.sosy_lab.jar.model.SpringMethodParameter;
+import org.sosy_lab.jar.model.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -77,6 +73,127 @@ public class JarFileLoader {
   }
 
   /**
+   * Returns the {@see VerificationClass} for a given {@see CtClass}.
+   *
+   * @param ctClass The ctClass we want to map to a VerificationClass
+   */
+  private VerificationClass verificationClassFromCtClass(CtClass ctClass) {
+    List<ClassConstructor> constructors =
+        Arrays.stream(ctClass.getConstructors())
+            .map(
+                ctConstructor -> {
+                  try {
+                    List<CtClass> parameterTypes = Arrays.asList(ctConstructor.getParameterTypes());
+                    MethodInfo methodInfo = ctConstructor.getMethodInfo();
+                    MethodParametersAttribute methodParametersAttribute =
+                        (MethodParametersAttribute)
+                            methodInfo.getAttribute(MethodParametersAttribute.tag);
+
+                    SignatureAttribute.MethodSignature methodSignature =
+                        SignatureAttribute.toMethodSignature(
+                            ctConstructor.getGenericSignature() != null
+                                ? ctConstructor.getGenericSignature()
+                                : ctConstructor.getSignature());
+
+                    List<ClassConstructorArgument> constructorArguments = new ArrayList<>();
+                    if (methodParametersAttribute != null) {
+                      for (int i = 0; i < methodParametersAttribute.size(); i++) {
+                        String parameterName = methodParametersAttribute.parameterName(i);
+                        CtClass parameterType = parameterTypes.get(i);
+                        String signature = methodSignature.getParameterTypes()[i].jvmTypeName();
+
+                        constructorArguments.add(
+                            new ClassConstructorArgument(
+                                verificationClassFromClassAndSignature(parameterType, signature),
+                                parameterName,
+                                findGetterMethod(ctClass, parameterType, parameterName)));
+                      }
+                    }
+
+                    return new ClassConstructor(constructorArguments);
+                  } catch (NotFoundException e) {
+                    // We intentionally return null here to enable partial parsing of an endpoint
+                    return null;
+                  } catch (BadBytecode e) {
+                    throw new WrongMethodSignatureException(
+                        "Failed to read constructor method signature in class " + ctClass.getName(),
+                        e);
+                  }
+                })
+            .toList();
+
+    return new VerificationClass(
+        ctClass.getSimpleName(),
+        ctClass.getPackageName(),
+        Optional.empty(),
+        constructors,
+        ctClass.isInterface());
+  }
+
+  /**
+   * Method to find a getter method for a given parameter inside a class.
+   *
+   * @param ctClass The class where we expect a getter.
+   * @param parameterType The type of the parameter used in the constructor.
+   * @param parameterName The name of the parameter used in the constructor.
+   */
+  private Optional<String> findGetterMethod(
+      CtClass ctClass, CtClass parameterType, String parameterName) {
+    return Arrays.stream(ctClass.getMethods())
+        .filter(
+            method -> {
+              try {
+                return method.getReturnType().equals(parameterType)
+                    && (method.getName().equalsIgnoreCase(parameterName)
+                        || method.getName().equalsIgnoreCase("get" + parameterName)
+                        || method.getName().equalsIgnoreCase("is" + parameterName));
+              } catch (NotFoundException e) {
+                // We intentionally return false here to enable partial parsing of an endpoint
+                return false;
+              }
+            })
+        .findFirst()
+        .map(CtMethod::getName);
+  }
+
+  /**
+   * Returns the {@see VerificationClass} for a given {@see CtClass} and signature.
+   *
+   * @param ctClass The ctClass we want to map to a VerificationClass
+   * @param signature The signature of the class
+   */
+  private VerificationClass verificationClassFromClassAndSignature(
+      CtClass ctClass, String signature) {
+    // TODO: Add more cases where we have an array (e.g. ArrayList, LinkedList, Set, etc...)
+    if (signature.contains("java.util.List")) {
+      String className = signature.replace("java.util.List<", "").replace(">", "");
+      VerificationClass listClass = verificationClassFromCtClass(ctClass);
+      try {
+        VerificationClass innerClass =
+            verificationClassFromCtClass(ClassPool.getDefault().get(className));
+
+        return new VerificationListClass(
+            listClass.getSimpleName(),
+            listClass.getPackageName(),
+            Optional.of(signature),
+            listClass.getConstructors(),
+            innerClass);
+      } catch (NotFoundException ex) {
+        throw new ClassNotFoundInClassPathException(
+            "Couldn't find class " + className + " in the classpath", ex);
+      }
+    } else {
+      VerificationClass createdClass = verificationClassFromCtClass(ctClass);
+      return new VerificationClass(
+          createdClass.getSimpleName(),
+          createdClass.getPackageName(),
+          Optional.of(signature),
+          createdClass.getConstructors(),
+          createdClass.isInterface());
+    }
+  }
+
+  /**
    * Returns the classFile for a given jarEntry.
    *
    * @param jarFile The jarFile we read the jarEntry from.
@@ -126,7 +243,8 @@ public class JarFileLoader {
             .map(this::methodInfoToSpringEndpoint)
             .toList();
 
-    return new SpringControllerClass(ctClass.getName(), ctClass, endpointMethods);
+    return new SpringControllerClass(
+        ctClass.getName(), verificationClassFromCtClass(ctClass), endpointMethods);
   }
 
   /**
@@ -194,10 +312,15 @@ public class JarFileLoader {
           httpMethod.get(),
           endpointPath.get(),
           methodParameters,
-          methodSignature.getReturnType().jvmTypeName());
+          methodSignature.getReturnType().jvmTypeName(),
+          verificationClassFromClassAndSignature(
+              ctMethod.getReturnType(), methodSignature.getReturnType().jvmTypeName()));
     } catch (BadBytecode e) {
       throw new WrongMethodSignatureException(
           "Failed to read methodSignature from method's signature", e);
+    } catch (NotFoundException e) {
+      // We intentionally return null here to enable partial parsing of an endpoint
+      return null;
     }
   }
 

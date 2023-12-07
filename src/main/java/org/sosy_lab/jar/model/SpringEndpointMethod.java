@@ -17,4 +17,5 @@ public record SpringEndpointMethod(
     HttpMethod httpMethod,
     List<String> endpointPaths,
     List<SpringMethodParameter> parameters,
-    String returnType) {}
+    String returnType,
+    VerificationClass returnTypeClass) {}

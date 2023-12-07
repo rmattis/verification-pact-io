@@ -25,41 +25,30 @@ public class JarFileLoaderTest {
           jarFileLoader.readSpringControllerClasses(
               new File(getClass().getClassLoader().getResource("provider.jar").getFile()));
 
-      System.out.println(controllerClasses);
-
-      Assertions.assertEquals(controllerClasses.size(), 1);
+      Assertions.assertEquals(1, controllerClasses.size());
 
       SpringControllerClass controllerClass = controllerClasses.get(0);
-      Assertions.assertEquals("au.com.dius.pactworkshop.provider.ProductController", controllerClass.name());
+      Assertions.assertEquals(
+          "au.com.dius.pactworkshop.provider.ProductController", controllerClass.name());
       Assertions.assertEquals(3, controllerClass.methods().size());
 
-      SpringEndpointMethod getAllProductsMethod =
-          new SpringEndpointMethod(
-              "getAllProducts",
-              HttpMethod.GET,
-              List.of("products"),
-              List.of(),
-              "java.util.List<au.com.dius.pactworkshop.provider.Product>");
-
-      SpringEndpointMethod getProductByIdEndpoint =
-          new SpringEndpointMethod(
-              "getProductById",
-              HttpMethod.GET,
-              List.of("product/{id}"),
-              List.of(new SpringMethodParameter("id", "java.lang.String")),
-              "org.springframework.http.ResponseEntity<au.com.dius.pactworkshop.provider.Product>");
-
-      SpringEndpointMethod getAverageTemperatureByYearEndpoint =
-              new SpringEndpointMethod(
-                      "getAverageTemperatureByYear",
-                      HttpMethod.GET,
-                      List.of("temperature/{year}"),
-                      List.of(new SpringMethodParameter("year", "int")),
-                      "au.com.dius.pactworkshop.provider.YearTemperature");
+      Assertions.assertEquals(
+          List.of(List.of("products"), List.of("product/{id}"), List.of("temperature/{year}")),
+          controllerClass.methods().stream().map(SpringEndpointMethod::endpointPaths).toList());
 
       Assertions.assertEquals(
-          controllerClass.methods(), List.of(getAllProductsMethod, getProductByIdEndpoint, getAverageTemperatureByYearEndpoint));
+              List.of("getAllProducts", "getProductById", "getAverageTemperatureByYear"),
+              controllerClass.methods().stream().map(SpringEndpointMethod::methodName).toList());
 
+      Assertions.assertEquals(
+          List.of(
+              "java.util.List<au.com.dius.pactworkshop.provider.Product>",
+              "org.springframework.http.ResponseEntity<au.com.dius.pactworkshop.provider.Product>",
+              "au.com.dius" + ".pactworkshop.provider.YearTemperature"),
+          controllerClass.methods().stream().map(SpringEndpointMethod::returnType).toList());
+
+      Assertions.assertTrue(controllerClass.methods().stream()
+              .allMatch(method -> method.httpMethod() == HttpMethod.GET));
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

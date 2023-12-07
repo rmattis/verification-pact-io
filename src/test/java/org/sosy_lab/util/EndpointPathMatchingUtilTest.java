@@ -1,6 +1,5 @@
 package org.sosy_lab.util;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.sosy_lab.jar.model.HttpMethod;
@@ -17,7 +16,7 @@ public class EndpointPathMatchingUtilTest {
   public void getPactInteractionsForMethodMustReturnOnlyInteractionsMatchingPathOfTheMethod() {
     SpringEndpointMethod endpointMethod =
         new SpringEndpointMethod(
-            "test", HttpMethod.GET, List.of("temperature/{year}"), List.of(), "test");
+            "test", HttpMethod.GET, List.of("temperature/{year}"), List.of(), "test", null);
 
     var matchingInteraction = pactInteractionFromPath(HttpMethod.GET, "temperature/2020");
 
