@@ -2,6 +2,7 @@ package org.sosy_lab.pact.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.sosy_lab.jar.model.HttpMethod;
 import org.sosy_lab.pact.model.matching.rule.PactMatchingRules;
 
 import java.util.Optional;
@@ -18,4 +19,4 @@ import java.util.Optional;
  */
 @JsonIgnoreProperties({"query", "headers", "generators"})
 public record PactRequest(
-    String method, String path, JsonNode body, Optional<PactMatchingRules> matchingRules) {}
+    HttpMethod method, String path, JsonNode body, Optional<PactMatchingRules> matchingRules) {}
